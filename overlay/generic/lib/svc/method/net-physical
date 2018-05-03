@@ -527,9 +527,11 @@ if smf_is_globalzone; then
 
         nictagadm list
     elif [[ -v CONFIG_admin_tag ]]; then
-        eval ADMIN_MAC='$'CONFIG_${CONFIG_admin_tag}_mac
-        SYSINFO_NIC_admin=$(dladm show-phys -m -o link,address |
-            grep $ADMIN_MAC | awk '{print $1}')
+        #
+        # This handles the case when the 'admin_tag' property is set to
+        # override the default admin nic tag.
+        #
+        eval SYSINFO_NIC_admin='$'SYSINFO_NIC_${CONFIG_admin_tag}
 
         eval CONFIG_admin_ip='$'CONFIG_${CONFIG_admin_tag}_ip
         eval CONFIG_admin_ip6='$'CONFIG_${CONFIG_admin_tag}_ip6
